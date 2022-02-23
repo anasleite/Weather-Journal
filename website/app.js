@@ -7,9 +7,9 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 // Personal API Key for OpenWeatherMap API
 
-const baseURL = `api.openweathermap.org/data/2.5/weather?zip=${zip.value}`;
+const baseURL = `api.openweathermap.org/data/2.5/weather?zip=`;
 //api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
-const apiKey = 'd18d7a982905c2b871082fd8028f928c&units=metric';
+const apiKey = 'd18d7a982905c2b871082fd8028f928c&units=imperial';
 
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', performAction);
@@ -26,7 +26,7 @@ function performAction(e){
     .then (function(data){
             console.log(data);
             postData('/add', {
-                date: data.newDate, 
+                date: newDate, 
                 temp: data.main.temp, 
                 content: feelings});
         })
@@ -37,7 +37,7 @@ function performAction(e){
 
     /* Function to GET Web API Data*/
     const getWeather = async(baseURL, zipCode, apiKey)=>{
-        const request = await fetch(baseURL,zipCode,apiKey)
+        const request = await fetch(`${baseURL}${zipCode}&appid=${apiKey}`);
         try {
             const allData = await request.json();
             console.log(allData)

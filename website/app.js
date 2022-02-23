@@ -1,18 +1,3 @@
-/* Global Variables */
-
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
-
-
-// Personal API Key for OpenWeatherMap API
-
-const baseURL = `api.openweathermap.org/data/2.5/weather?zip=`;
-//api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
-const apiKey = 'd18d7a982905c2b871082fd8028f928c&units=imperial';
-
-// Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', performAction);
 
 
 /* Function called by event listener */
@@ -65,19 +50,20 @@ const postData = async (url='', data = {})=>{
 };
 
 
-//code written based on project rubric: https://review.udacity.com/#!/rubrics/4671/view
+//code written based on project rubric: https://review.udacity.com/#!/rubrics/4671/view and classroom: https://classroom.udacity.com/nanodegrees/nd0011/parts/cd0429/modules/d153872b-b417-4f32-9c77-d809dc21581d/lessons/ls1846/concepts/06b6f9e9-221f-4668-8d13-a70346b293d2
 /* Function to GET Project Data */
 
-const retrieveData = async () =>{
+const updateData = async () =>{
     const request = await fetch('/all');
     try {
     // Transform into JSON
     const allData = await request.json()
     console.log(allData)
     // Write updated data to DOM elements
-    document.getElementById('temp').innerHTML = Math.round(allData.temp)+ 'degrees';
-    document.getElementById('content').innerHTML = allData.feel;
-    document.getElementById('date').innerHTML =allData.date;
+    document.getElementById('date').innerHTML = `${allData.date}`;
+    document.getElementById('temp').innerHTML = `${allData.temp}+ 'degrees'`;
+    document.getElementById('content').innerHTML = `${allData.content}`;
+    
     }
     catch(error) {
       console.log("error", error);

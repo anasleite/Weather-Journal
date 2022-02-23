@@ -57,7 +57,7 @@ function addData (req, res){
     newEntry = {
         temperature: req.body.temp,
         date: req.body.date,
-        userResponse: req.body.content
+        content: req.body.content
     }
     projectData.push(newEntry);
     res.send(projectData)

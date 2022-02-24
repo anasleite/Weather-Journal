@@ -12,7 +12,7 @@ function performAction(e){
             console.log(data);
             postData('/add', {
                 date: newDate, 
-                temp: data.main.temp, 
+                temp: data.main.temp, //error here at console, 'main' is undefined?!
                 content: feelings});
         })
         .then(function(){

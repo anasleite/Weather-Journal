@@ -1,31 +1,54 @@
 
+/* Global Variables */
+
+//const { all } = require("express/lib/application");
+
+// Create a new date instance dynamically with JS
+let d = new Date();
+let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+
+
+// Personal API Key for OpenWeatherMap API
+
+const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=`;
+//api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
+const apiKey = '&appid=97083300665d16da00e0eea5ed60bea9&units=metric';
+
+// Event listener to add function to existing HTML DOM element
+document.getElementById('generate').addEventListener('click', performAction);
+
 
 /* Function called by event listener */
 //code bellow written based on: https://classroom.udacity.com/nanodegrees/nd0011/parts/cd0429/modules/d153872b-b417-4f32-9c77-d809dc21581d/lessons/ls1846/concepts/06b6f9e9-221f-4668-8d13-a70346b293d2 
 //and https://classroom.udacity.com/nanodegrees/nd0011/parts/cd0429/modules/d153872b-b417-4f32-9c77-d809dc21581d/lessons/ls1846/concepts/06b6f9e9-221f-4668-8d13-a70346b293d2
 
-function performAction(e){
+function performAction(){
     const zipCode =  document.getElementById('zip').value;
     const feelings = document.getElementById('feelings').value;
     getWeather(baseURL,zipCode, apiKey)
     .then (function(data){
-            console.log(data);
-            postData('/add', {
+            console.log("Add data from api: ", data);
+            postData("/addData", {
                 date: newDate, 
-                temp: data.main.temp, //error here at console, 'main' is undefined?!
+                temp: data.main.temp, 
                 content: feelings});
         })
-        .then(function(){
-            updateUI();
-        })
-    };
+        .then(() => updateData());
+    }
 
     /* Function to GET Web API Data*/
     const getWeather = async(baseURL, zipCode, apiKey)=>{
-        const request = await fetch(`${baseURL}${zipCode}&appid=${apiKey}`);
+
+        const url = baseURL + zipCode + apiKey;
+        const request = await fetch(url);
         try {
             const allData = await request.json();
-            console.log(allData)
+            //console.log(allData)
+            if (allData.message) {
+                alert(allData.message);
+            }else {
+                return allData;
+            }
         } catch(error) {
             console.log("error", error);
         }
@@ -54,7 +77,7 @@ const postData = async (url='', data = {})=>{
 /* Function to GET Project Data */
 
 const updateData = async () =>{
-    const request = await fetch('/all');
+    const request = await fetch("/all");
     try {
     // Transform into JSON
     const allData = await request.json()
